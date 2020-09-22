@@ -11,22 +11,15 @@ public class Controller {
     Controller() {
         int noOfFloors = 20;//no of floors
         lift = new Lift(noOfFloors,2,Direction.UP);
-        listOfLifts = new ArrayList<>();
-        listOfLifts.add(new Lift(noOfFloors,2,Direction.UP));
-        listOfLifts.add(new Lift(noOfFloors,10,Direction.UP));
-        for(Lift lift: listOfLifts){
-            lift.start();
-        }
+        lift.start();
     }
 
     void callElevator(Person person) {
-        List<Lift> listOfLifts = new ArrayList<>();
         if(person.direction == Direction.UP)
             lift.listOfPeopleGoingUp.addAsc(person);
         else
             lift.listOfPeopleGoingDown.addDesc(person);
 
-//        nearestLift(person.inFloor, person.outFloor, 20,person);
     }
 
     public void nearestLift(int requestFromFloor, int destinationFloor, int totalNoOfFloors, Person person){
@@ -74,5 +67,30 @@ public class Controller {
                 eligibleLiftValuesMap.get(maxEligibility).listOfPeopleGoingDown.addDesc(person);
             }
         }
+    }
+
+    public static void main(String args[]) {
+        Controller c = new Controller();
+        int noOfPeople = 3;
+        c.testCase(3);
+    }
+
+    void testCase( int n ) {
+        lift.controller = this;
+        Random r = new Random();
+        int source;
+        int dest;
+        Person p;
+
+        for(int i = 0; i < n; i++) {
+            source = r.nextInt(Lift.maxFloor) + 1;
+            dest = r.nextInt(Lift.maxFloor) + 1;
+            p = new Person( source, dest, this);
+            p.start();
+        }
+        try{
+            Thread.sleep(1000);
+        }catch(Exception e){ e.printStackTrace(); }
+        lift.interrupt();
     }
 }
