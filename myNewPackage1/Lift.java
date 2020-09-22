@@ -2,7 +2,7 @@ package myNewPackage1;
 
 public class Lift extends Thread {
     String name;
-    final static int maxWeight = 10;
+    final static int maxWeight = 5;
     final static int minWeight = 1;
     final static int minFloor = 1;
     static int maxFloor = 20;
@@ -16,10 +16,10 @@ public class Lift extends Thread {
     LinkedList<Person> listOfPeopleInside;
 
     Lift(int noOfFloors,int currentFloor,Direction direction) {
-        maxFloor = noOfFloors;
-        currentFloor = currentFloor;
-        direction = direction;
-        door = Door.CLOSE;
+        this.maxFloor = noOfFloors;
+        this.currentFloor = currentFloor;
+        this.direction = direction;
+        this.door = Door.CLOSE;
 
         listOfPeopleGoingUp = new LinkedList<Person>();
         listOfPeopleGoingDown = new LinkedList<Person>();
@@ -39,7 +39,6 @@ public class Lift extends Thread {
     public void run() {
         while(true) {
             if(isInterrupted()) {
-                //interrupted(); 		// clears the interrupted status
                 while( listOfPeopleGoingUp.head != null || listOfPeopleGoingDown.head != null || listOfPeopleInside.head != null ) {
                     if( direction == Direction.UP && currentFloor <= maxFloor) {
                         servePeopleGoingUp();
@@ -121,6 +120,14 @@ public class Lift extends Thread {
             if( currentPersonInUpList != null || currentPersonInElevator != null )
                 currentFloor = currentFloor + 1;
         }
+
+        // add people back to upList to be served on the next round
+        Node<Person> currentPersonInTempList = tempList.head;
+        while(currentPersonInTempList != null) {
+            listOfPeopleGoingUp.addAsc(currentPersonInTempList.data);
+            currentPersonInTempList = currentPersonInTempList.next;
+        }
+
         // what if you have not reached the top floor from where the downlist will be served
         if(listOfPeopleGoingDown.head != null) {
             int downFloorStart = listOfPeopleGoingDown.head.data.inFloor;
@@ -199,6 +206,13 @@ public class Lift extends Thread {
 
             if( currentPersonInDownList != null || currentPersonInElevator != null )
                 currentFloor = currentFloor - 1;
+        }
+
+        // add people back to upList to be served on the next round
+        Node<Person> currentPersonInTempList = tempList.head;
+        while(currentPersonInTempList != null) {
+            listOfPeopleGoingDown.addDesc(currentPersonInTempList.data);
+            currentPersonInTempList = currentPersonInTempList.next;
         }
 
         // what if you have not reached the bottom floor from where the uplist will be served
