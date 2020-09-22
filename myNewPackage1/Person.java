@@ -14,7 +14,7 @@ public class Person extends Thread implements Comparable<Person> {
         outFloor = out;
         controller = c;
 
-        System.out.println("Person Created :\n[ID: " + getId() + " weight : " + weight + " in : " + inFloor + " out : " + outFloor + "]\n");
+        System.out.println("Person Created :\n[ID: " + getId() + ", weight : " + weight + ", goingIntoLiftAtFloor : " + inFloor + ", comingOutOfFlatAtFloor : " + outFloor + "]\n");
 
         // also check condition for infloor == outfloor
         if(inFloor == outFloor) {
@@ -29,12 +29,9 @@ public class Person extends Thread implements Comparable<Person> {
             synchronized(controller) {
                 controller.callElevator(this);
             }
-
             synchronized(this) {
-                //System.out.println("thread : " + this + " ");
                 wait();
             }
-
             System.out.println("End of thread : " + this);
 
         } catch(InterruptedException ie) {
@@ -64,8 +61,6 @@ public class Person extends Thread implements Comparable<Person> {
         }
 
     }
-
-
     public String toString() {
         return "ID: " + getId(); // + " weight : " + weight + " in : " + inFloor + " out : " + outFloor;
     }
