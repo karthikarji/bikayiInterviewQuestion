@@ -62,7 +62,7 @@ public class Lift extends Thread {
 
         while( currentPersonInUpList != null || currentPersonInElevator != null ) {	// if anyone wants to get out / get in
 
-            System.out.println("\n------------------ FLOOR : " + currentFloor + " : ---------------------\n");
+            System.out.println("\n*********** FLOOR : " + currentFloor + " : ***********\n");
 
             if(currentPersonInElevator != null) {			// if there is someone who wants to get out
 
@@ -149,7 +149,7 @@ public class Lift extends Thread {
 
         while( currentPersonInDownList != null || currentPersonInElevator != null ) {	// if anyone wants to get out / get in
 
-            System.out.println("\n------------------ FLOOR : " + currentFloor + " : ---------------------\n");
+            System.out.println("\n*********** FLOOR : " + currentFloor + " : ***********\n");
 
             if(currentPersonInElevator != null) {			// if there is someone who wants to get out
                 // check all the people in lift
